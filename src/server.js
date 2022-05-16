@@ -3,7 +3,6 @@ const status = require('./status')
 const controller = require('./controller')
 const { port } = require('./config')
 const { version } = require('../package.json')
-const { isAddress } = require('web3-utils')
 
 const app = express()
 app.use(express.json())

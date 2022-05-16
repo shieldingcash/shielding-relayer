@@ -1,11 +1,10 @@
-const fs = require('fs')
 const Web3 = require('web3')
-const { toBN, toWei, fromWei, toChecksumAddress } = require('web3-utils')
+const { toBN, fromWei } = require('web3-utils')
 const Redis = require('ioredis')
 
 const tornadoABI = require('../abis/tornadoABI.json')
 const { queue } = require('./queue')
-const { getInstance, fromDecimals, sleep } = require('./utils')
+const { getInstance, fromDecimals } = require('./utils')
 const { jobType, status } = require('./constants')
 
 const {
@@ -25,9 +24,8 @@ let currentTx
 let currentJob
 let txManager
 const redis = new Redis(redisUrl)
-const redisSubscribe = new Redis(redisUrl)
 
-async function start() {
+function start() {
   try {
     web3 = new Web3(httpRpcUrl)
     const { CONFIRMATIONS, MAX_GAS_PRICE } = process.env
@@ -98,11 +96,11 @@ async function checkTornadoFee({ args, contract }) {
   }
 }
 
-async function getTxObject({ data }) {
+function getTxObject({ data }) {
   if (data.type === jobType.SHIELD_WITHDRAW) {
     // Now: without mining.
-    contract = new web3.eth.Contract(tornadoABI, data.contract)
-    calldata = contract.methods.withdraw(data.proof, ...data.args).encodeABI()
+    let contract = new web3.eth.Contract(tornadoABI, data.contract)
+    let calldata = contract.methods.withdraw(data.proof, ...data.args).encodeABI()
 
     return {
       value: data.args[5],
@@ -131,7 +129,7 @@ async function processJob(job) {
   }
 }
 
-async function submitTx(job, retry = 0) {
+async function submitTx(job) {
   await checkFee(job)
   currentTx = await txManager.createTx(await getTxObject(job))
 

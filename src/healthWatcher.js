@@ -13,7 +13,6 @@ async function main() {
     const { address } = web3.eth.accounts.privateKeyToAccount(privateKey)
     const balance = await web3.eth.getBalance(address)
 
-
     if (toBN(balance).lt(toBN(minimumBalance))) {
       throw new Error(`Not enough balance, less than ${fromWei(minimumBalance)} ${netCurrencyName}`)
     }
