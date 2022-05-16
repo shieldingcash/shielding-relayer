@@ -25,7 +25,7 @@ let currentJob
 let txManager
 const redis = new Redis(redisUrl)
 
-async function start() {
+function start() {
   try {
     web3 = new Web3(httpRpcUrl)
     const { CONFIRMATIONS, MAX_GAS_PRICE } = process.env
@@ -96,7 +96,7 @@ async function checkTornadoFee({ args, contract }) {
   }
 }
 
-async function getTxObject({ data }) {
+function getTxObject({ data }) {
   if (data.type === jobType.SHIELD_WITHDRAW) {
     // Now: without mining.
     let contract = new web3.eth.Contract(tornadoABI, data.contract)
