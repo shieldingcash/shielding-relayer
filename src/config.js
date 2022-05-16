@@ -21,5 +21,5 @@ module.exports = {
   baseFeeReserve: Number(process.env.BASE_FEE_RESERVE_PERCENTAGE) || 25,
 
   // deploy contracts related.
-  instances: { },
+  instances: {},
 }

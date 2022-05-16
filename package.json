@@ -10,7 +10,7 @@
     "eslint": "eslint --ext .js --ignore-path .gitignore .",
     "prettier:check": "npx prettier --check . --config .prettierrc",
     "prettier:fix": "npx prettier --write . --config .prettierrc",
-    "lint": "npm run eslint && npm run prettier:check",
+    "lint": "yarn eslint && yarn prettier:fix",
     "test": "mocha",
     "start": "yarn server & yarn worker & yarn healthWatcher & yarn priceWatcher"
   },

@@ -5,11 +5,11 @@ const Redis = require('ioredis')
 const redis = new Redis(redisUrl)
 
 async function status(req, res) {
-  let ethPrices = { }
+  let ethPrices = {}
   try {
     ethPrices = await redis.hgetall('prices')
   } catch (e) {
-    console.log('error=', e.message) 
+    console.log('error=', e.message)
   }
   const gasPrices = await redis.get('gasPrice')
   const health = await redis.hgetall('health')
@@ -18,7 +18,7 @@ async function status(req, res) {
   const { waiting: currentQueue } = await queue.queue.getJobCounts()
 
   res.json({
-    'data': {
+    data: {
       relayerServiceFee,
       relayerAddress,
       instances: instances[`netId${netId}`],
@@ -28,7 +28,7 @@ async function status(req, res) {
       version,
       health,
       currentQueue,
-    }
+    },
   })
 }
 
