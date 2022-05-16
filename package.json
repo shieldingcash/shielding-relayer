@@ -5,7 +5,7 @@
   "scripts": {
     "server": "node src/server.js",
     "worker": "node src/worker",
-    "priceWatcher": "node src/priceWatcher.js", 
+    "priceWatcher": "node src/priceWatcher.js",
     "healthWatcher": "node src/healthWatcher.js",
     "eslint": "eslint --ext .js --ignore-path .gitignore .",
     "prettier:check": "npx prettier --check . --config .prettierrc",

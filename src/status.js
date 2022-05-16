@@ -9,6 +9,7 @@ async function status(req, res) {
   try {
     ethPrices = await redis.hgetall('prices')
   } catch (e) {
+    console.log('error=', e.message) 
   }
   const gasPrices = await redis.get('gasPrice')
   const health = await redis.hgetall('health')
@@ -18,15 +19,15 @@ async function status(req, res) {
 
   res.json({
     'data': {
-       relayerServiceFee,
-       relayerAddress,
-       instances: instances[`netId${netId}`],
-       netId,
-       ethPrices,
-       gasPrices,
-       version,
-       health,
-       currentQueue,
+      relayerServiceFee,
+      relayerAddress,
+      instances: instances[`netId${netId}`],
+      netId,
+      ethPrices,
+      gasPrices,
+      version,
+      health,
+      currentQueue,
     }
   })
 }
