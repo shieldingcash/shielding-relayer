@@ -1,5 +1,5 @@
 const Web3 = require('web3')
-const { toBN, fromWei } = require('web3-utils')
+const { toBN, fromWei, toWei } = require('web3-utils')
 const Redis = require('ioredis')
 
 const tornadoABI = require('../abis/tornadoABI.json')
@@ -16,6 +16,8 @@ const {
   httpRpcUrl,
   baseFeeReserve,
   shieldingWithdrawFee,
+  MAX_GAS_PRICE,
+  CONFIRMATIONS,
 } = require('./config')
 const { TxManager } = require('tx-manager')
 
@@ -28,7 +30,10 @@ const redis = new Redis(redisUrl)
 function start() {
   try {
     web3 = new Web3(httpRpcUrl)
-    const { CONFIRMATIONS, MAX_GAS_PRICE } = process.env
+    if (!privateKey) {
+      console.log('please set privateKey in your env, worker exiting......')
+      process.exit(-1)
+    }
     txManager = new TxManager({
       privateKey,
       rpcUrl: httpRpcUrl,
@@ -40,21 +45,21 @@ function start() {
       },
     })
     queue.process(processJob)
-    console.log('Worker started')
+    console.log('Worker starte successfully!')
   } catch (e) {
     console.error('error on start worker', e.message)
   }
 }
 
 function checkFee({ data }) {
-  if (data.type === jobType.SHIELD_WITHDRAW) {
+  if (data.type === jobType.SHIELDING_WITHDRAW) {
     return checkTornadoFee(data)
   }
 }
 
 async function getGasPrice() {
   const gasPrice = await redis.get('gasPrice')
-  return gasPrice
+  return toWei(gasPrice, 'gwei')
 }
 
 async function checkTornadoFee({ args, contract }) {
@@ -64,7 +69,10 @@ async function checkTornadoFee({ args, contract }) {
   const gasPrice = await getGasPrice()
 
   const ethPrice = await redis.hget('prices', currency)
-  const expense = gasPrice.mul(toBN(gasLimits[jobType.SHIELD_WITHDRAW]))
+  // gasLimits[jobType.SHIELDING_WITHDRAW] is the estimated value,
+  // when send use gasLimits[WITHDRAW_WITH_EXTRA], we expect front's gas > gasLimits[jobType.SHIELDING_WITHDRAW],
+  // and front's gas < gasLimits[WITHDRAW_WITH_EXTRA]
+  const expense = toBN(gasPrice).mul(toBN(gasLimits[jobType.SHIELDING_WITHDRAW]))
 
   const feePercent = toBN(fromDecimals(amount, decimals))
     .mul(toBN(parseInt(shieldingWithdrawFee * 1e10)))
@@ -94,18 +102,21 @@ async function checkTornadoFee({ args, contract }) {
   if (fee.lt(desiredFee)) {
     throw new Error('Provided fee is not enough. Probably it is a Gas Price spike, try to resubmit.')
   }
+  console.log('recved fee=', fee, ' desiredFee=', desiredFee)
 }
 
-function getTxObject({ data }) {
-  if (data.type === jobType.SHIELD_WITHDRAW) {
+async function getTxObject({ data }) {
+  if (data.type === jobType.SHIELDING_WITHDRAW) {
     // Now: without mining.
     let contract = new web3.eth.Contract(tornadoABI, data.contract)
     let calldata = contract.methods.withdraw(data.proof, ...data.args).encodeABI()
+    let gasPrice = await getGasPrice()
 
     return {
       value: data.args[5],
       to: contract._address,
       data: calldata,
+      gasPrice: web3.utils.toHex(gasPrice),
       gasLimit: gasLimits['WITHDRAW_WITH_EXTRA'],
     }
   } else {

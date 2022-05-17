@@ -1,5 +1,5 @@
 const queue = require('./queue')
-const { netId, instances, redisUrl, shieldingWithdrawFee } = require('./config')
+const { netId, instances, redisUrl, shieldingWithdrawFee, relayerAddress, isEvmNet } = require('./config')
 const { version } = require('../package.json')
 const Redis = require('ioredis')
 const redis = new Redis(redisUrl)
@@ -18,17 +18,16 @@ async function status(req, res) {
   const { waiting: currentQueue } = await queue.queue.getJobCounts()
 
   res.json({
-    data: {
-      relayerServiceFee,
-      relayerAddress: instances[`netId${netId}`].relayerAddress,
-      instances: instances[`netId${netId}`],
-      netId,
-      ethPrices,
-      gasPrices,
-      version,
-      health,
-      currentQueue,
-    },
+    relayerServiceFee,
+    relayerAddress,
+    isEvmNet,
+    instances: instances[`netId${netId}`],
+    netId,
+    ethPrices,
+    gasPrices,
+    version,
+    health,
+    currentQueue,
   })
 }
 
