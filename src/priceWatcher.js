@@ -66,4 +66,4 @@ async function main() {
 }
 
 // 10 minute update
-setSafeInterval(main, 10 * 60 * 1000)
+setSafeInterval(main, 100 * 10 * 60 * 1000)

@@ -6,9 +6,8 @@ module.exports = {
   redisUrl: process.env.REDIS_URL || 'redis://127.0.0.1:6379',
   httpRpcUrl: process.env.HTTP_RPC_URL || 'https://pre-rpc.bt.io',
   privateKey: process.env.PRIVATE_KEY,
-  port: process.env.APP_PORT || 8000,
+  port: process.env.APP_PORT || 8053,
 
-  relayerAddress: process.env.RELAYER_ADDRESS || '0xf574f119978412A41b0e47dDD750C12A1f08Af3C',
   shieldingWithdrawFee: Number(process.env.REGULAR_SHIELDING_WITHDRAW_FEE) || Number('0.05'),
   gasLimits: {
     [jobType.SHIELDING_WITHDRAW]: 390000,

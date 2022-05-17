@@ -18,17 +18,15 @@ async function status(req, res) {
   const { waiting: currentQueue } = await queue.queue.getJobCounts()
 
   res.json({
-    data: {
-      relayerServiceFee,
-      relayerAddress: instances[`netId${netId}`].relayerAddress,
-      instances: instances[`netId${netId}`],
-      netId,
-      ethPrices,
-      gasPrices,
-      version,
-      health,
-      currentQueue,
-    },
+    relayerServiceFee,
+    relayerAddress: instances.relayerAddress,
+    instances: instances[`netId${netId}`],
+    netId,
+    ethPrices,
+    gasPrices,
+    version,
+    health,
+    currentQueue,
   })
 }
 
