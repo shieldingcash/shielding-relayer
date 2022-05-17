@@ -24,9 +24,9 @@ app.use((err, req, res, next) => {
 })
 
 app.get('/', status.index)
-app.get('/jobs/:id', status.getJob)
+app.get('/jobs', status.getJob)
 app.get('/status', status.status)
 app.post('/relay', controller.shieldingWithdraw)
 
 app.listen(port)
-console.log(`Relayer ${version} started on port ${port}`)
+console.log(`Relayer server ${version} started on port ${port}`)

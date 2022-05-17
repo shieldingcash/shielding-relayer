@@ -1,5 +1,5 @@
 const queue = require('./queue')
-const { netId, instances, redisUrl, shieldingWithdrawFee } = require('./config')
+const { netId, instances, redisUrl, shieldingWithdrawFee, relayerAddress, isEvmNet } = require('./config')
 const { version } = require('../package.json')
 const Redis = require('ioredis')
 const redis = new Redis(redisUrl)
@@ -19,7 +19,8 @@ async function status(req, res) {
 
   res.json({
     relayerServiceFee,
-    relayerAddress: instances.relayerAddress,
+    relayerAddress,
+    isEvmNet,
     instances: instances[`netId${netId}`],
     netId,
     ethPrices,

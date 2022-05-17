@@ -26,10 +26,11 @@ async function postJob({ type, request }) {
       ...request, // proof, args, ?contract
     },
     {
-      //removeOnComplete: true
+      removeOnComplete: false,
     },
   )
   await redis.set(`job:${id}`, job.id)
+  console.log(`postJob uuid=${id} id=${job.id}`)
   return id
 }
 

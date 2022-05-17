@@ -1,6 +1,6 @@
 const { isAddress, toChecksumAddress } = require('web3-utils')
 const { getInstance } = require('./utils')
-const { rewardAccount } = require('./config')
+const { relayerAddress } = require('./config')
 
 const Ajv = require('ajv')
 const ajv = new Ajv({ format: 'fast' })
@@ -30,7 +30,7 @@ ajv.addKeyword('isKnownContract', {
 ajv.addKeyword('isFeeRecipient', {
   validate: (schema, data) => {
     try {
-      return toChecksumAddress(rewardAccount) === toChecksumAddress(data)
+      return toChecksumAddress(relayerAddress) === toChecksumAddress(data)
     } catch (e) {
       return false
     }

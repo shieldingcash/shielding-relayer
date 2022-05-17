@@ -4,7 +4,7 @@ const axios = require('axios')
 // const { toBN } = require('web3-utils')
 
 const { setSafeInterval } = require('./utils')
-const { netId, instances, redisUrl, httpRpcUrl } = require('./config')
+const { netId, instances, isEvmNet, redisUrl, httpRpcUrl } = require('./config')
 
 const web3 = new Web3(httpRpcUrl)
 const redis = new Redis(redisUrl)
@@ -12,7 +12,7 @@ const cmcUrl = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion'
 const cmcApiKeys = ['541df26c-f866-4bdf-88c3-e14a033cb570']
 
 async function fetchPrices() {
-  let netTokens = instances[`netId${netId}`].tokens
+  let netTokens = instances[`netId${netId}`]
   let keys = Object.keys(netTokens)
 
   let prices = new Map()
@@ -48,6 +48,7 @@ function web3FetchGasPrice() {
   try {
     web3.eth.getGasPrice().then(async gasPrice => {
       if (gasPrice) {
+        gasPrice = web3.utils.fromWei(gasPrice, 'gwei')
         await redis.set('gasPrice', gasPrice)
         console.log(`set gasPrice ${gasPrice}`)
       }
@@ -58,7 +59,7 @@ function web3FetchGasPrice() {
 }
 
 async function main() {
-  let isEvm = instances[`netId${netId}`].evm
+  let isEvm = isEvmNet[`netId${netId}`]
   if (isEvm) {
     web3FetchGasPrice()
   }

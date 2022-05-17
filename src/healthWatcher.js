@@ -18,7 +18,6 @@ async function main() {
     }
 
     await redis.hset('health', { status: true, error: '' })
-    console.log('success')
   } catch (e) {
     console.error('healthWatcher', e.message)
     await redis.hset('health', { status: false, error: e.message })

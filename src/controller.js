@@ -13,6 +13,7 @@ async function shieldingWithdraw(req, res) {
     console.log('Invalid input:', inputError)
     return res.status(400).json({ error: inputError })
   }
+  // TODO: check duplicated operations and verify it first you can doit.
 
   const id = await postJob({
     type: jobType.SHIELDING_WITHDRAW,
