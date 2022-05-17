@@ -1,40 +1,69 @@
 const Web3 = require('web3')
 const Redis = require('ioredis')
-const { toBN } = require('web3-utils')
+const axios = require('axios')
+// const { toBN } = require('web3-utils')
 
 const { setSafeInterval } = require('./utils')
-const { redisUrl, httpRpcUrl } = require('./config')
+const { netId, instances, redisUrl, httpRpcUrl } = require('./config')
 
 const web3 = new Web3(httpRpcUrl)
 const redis = new Redis(redisUrl)
+const cmcUrl = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion'
+const cmcApiKeys = ['541df26c-f866-4bdf-88c3-e14a033cb570']
 
-async function main() {
+async function fetchPrices() {
+  let netTokens = instances[`netId${netId}`].tokens
+  let keys = Object.keys(netTokens)
+
+  let prices = new Map()
+  for (let i = 0; i < keys.length; ++i) {
+    try {
+      let id = netTokens[keys[i]].cmcId
+      let url = `${cmcUrl}?id=${id}&amount=1&convert=USD`
+      let response = await axios.get(url, {
+        headers: {
+          'X-CMC_PRO_API_KEY': cmcApiKeys[i % cmcApiKeys.length],
+        },
+      })
+      prices.set(keys[i], response.data.data.quote['USD'].price)
+    } catch (e) {
+      console.log('cmc error=', e.message)
+      return
+    }
+  }
+  // console.log(prices)
+  if (prices.has('eth')) {
+    let eth_decimals = netTokens['eth'].decimals
+    for (let i = 0; i < keys.length; ++i) {
+      let decimals = netTokens[keys[i]].decimals
+
+      let price_in_eth = (prices.get(keys[i]) * 10 ** eth_decimals) / (prices.get('eth') * 10 ** decimals)
+      await redis.hset('prices', keys[i], price_in_eth)
+      console.log(`hset < prices, ${keys[i]} ${price_in_eth} >`)
+    }
+  }
+}
+
+function web3FetchGasPrice() {
   try {
-    try {
-      // TODO: to add code to fetch gas price
-      const block = await web3.eth.getBlock('latest')
-      let gasPrice = ''
-      if (block && block.baseFeePerGas) {
-        const baseFeePerGas = toBN(block.baseFeePerGas)
-        gasPrice = baseFeePerGas
-      } else {
-        gasPrice = 100
+    web3.eth.getGasPrice().then(async gasPrice => {
+      if (gasPrice) {
+        await redis.set('gasPrice', gasPrice)
+        console.log(`set gasPrice ${gasPrice}`)
       }
-      await redis.set('gasPrice', gasPrice)
-    } catch (e) {
-      console.log('gasPrice error=', e.message)
-    }
-
-    try {
-      // Set eth prices.
-      // TODO: add code to fetch prices.
-      // await redis.hset('prices', 'a', 124)
-    } catch (e) {
-      console.log('prices error=', e.message)
-    }
+    })
   } catch (e) {
     console.log('error=', e.message)
   }
 }
 
-setSafeInterval(main, 30 * 1000)
+async function main() {
+  let isEvm = instances[`netId${netId}`].evm
+  if (isEvm) {
+    web3FetchGasPrice()
+  }
+  await fetchPrices()
+}
+
+// 10 minute update
+setSafeInterval(main, 10 * 60 * 1000)
