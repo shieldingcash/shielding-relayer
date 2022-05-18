@@ -48,7 +48,7 @@ function web3FetchGasPrice() {
   try {
     web3.eth.getGasPrice().then(async gasPrice => {
       if (gasPrice) {
-        gasPrice = web3.utils.fromWei(gasPrice, 'gwei')
+        gasPrice = await web3.utils.fromWei(gasPrice, 'gwei')
         await redis.set('gasPrice', gasPrice)
         console.log(`set gasPrice ${gasPrice}`)
       }
@@ -66,5 +66,5 @@ async function main() {
   await fetchPrices()
 }
 
-// 10 minute update
-setSafeInterval(main, 100 * 10 * 60 * 1000)
+// 20 minute update
+setSafeInterval(main, 20 * 60 * 1000)

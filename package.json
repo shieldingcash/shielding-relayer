@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Relayer for shielding.cash privacy solution",
   "scripts": {
+    "dashboard": "node index.js",
     "server": "node src/server.js",
     "worker": "node src/worker",
     "priceWatcher": "node src/priceWatcher.js",
@@ -17,9 +18,11 @@
   "author": "tornado.cash",
   "license": "MIT",
   "dependencies": {
+    "@bull-board/express": "^3.10.4",
     "ajv": "^6.12.5",
     "async-mutex": "^0.2.4",
     "bull": "^3.12.1",
+    "bullmq": "^1.80.4",
     "circomlib": "git+https://github.com/tornadocash/circomlib.git#3b492f9801573eebcfe1b6c584afe8a3beecf2b4",
     "dotenv": "^8.2.0",
     "eth-ens-namehash": "^2.0.8",

@@ -102,7 +102,6 @@ async function checkTornadoFee({ args, contract }) {
   if (fee.lt(desiredFee)) {
     throw new Error('Provided fee is not enough. Probably it is a Gas Price spike, try to resubmit.')
   }
-  console.log('recved fee=', fee, ' desiredFee=', desiredFee)
 }
 
 async function getTxObject({ data }) {
