@@ -4,7 +4,7 @@ const axios = require('axios')
 // const { toBN } = require('web3-utils')
 
 const { setSafeInterval } = require('./utils')
-const { netId, instances, isEvmNet, redisUrl, httpRpcUrl } = require('./config')
+const { netId, instances, netExt, redisUrl, httpRpcUrl } = require('./config')
 
 const web3 = new Web3(httpRpcUrl)
 const redis = new Redis(redisUrl)
@@ -59,7 +59,7 @@ function web3FetchGasPrice() {
 }
 
 async function main() {
-  let isEvm = isEvmNet[`netId${netId}`]
+  let isEvm = netExt[`netId${netId}`].evm
   if (isEvm) {
     web3FetchGasPrice()
   }
