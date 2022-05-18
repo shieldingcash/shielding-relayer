@@ -22,11 +22,16 @@ module.exports = {
   MAX_GAS_PRICE: process.env.MAX_GAS_PRICE || 1e6,
 
   relayerAddress: process.env.RELAYER_ADDRESS || '0xf574f119978412A41b0e47dDD750C12A1f08Af3C',
-  isEvmNet: {
-    netId199: true,
-    netId1029: true,
+  netExt: {
+    netId199: {
+      evm: true,
+      verifier: '0x8cbc96c7ceC72C7e0f90f41Cd18a69942B487BC5',
+    },
+    netId1029: {
+      evm: true,
+      verifier: '0x8cbc96c7ceC72C7e0f90f41Cd18a69942B487BC5',
+    },
   },
-
   // same as front's deployment.
   instances: {
     netId199: {
