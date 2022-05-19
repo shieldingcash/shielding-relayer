@@ -10,6 +10,8 @@ const web3 = new Web3(httpRpcUrl)
 const redis = new Redis(redisUrl)
 const cmcUrl = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion'
 const cmcApiKeys = ['541df26c-f866-4bdf-88c3-e14a033cb570']
+var keyPos = 0,
+  timeInterval = 10
 
 async function fetchPrices() {
   let netTokens = instances[`netId${netId}`]
@@ -22,12 +24,12 @@ async function fetchPrices() {
       let url = `${cmcUrl}?id=${id}&amount=1&convert=USD`
       let response = await axios.get(url, {
         headers: {
-          'X-CMC_PRO_API_KEY': cmcApiKeys[i % cmcApiKeys.length],
+          'X-CMC_PRO_API_KEY': cmcApiKeys[keyPos++ % cmcApiKeys.length],
         },
       })
       prices.set(keys[i], response.data.data.quote['USD'].price)
     } catch (e) {
-      console.log('cmc error=', e.message)
+      console.error('priceWatcher[1]', e.message)
       return
     }
   }
@@ -38,8 +40,12 @@ async function fetchPrices() {
       let decimals = netTokens[keys[i]].decimals
 
       let price_in_eth = (prices.get(keys[i]) * 10 ** eth_decimals) / (prices.get('eth') * 10 ** decimals)
-      await redis.hset('prices', keys[i], price_in_eth)
-      console.log(`hset < prices, ${keys[i]} ${price_in_eth} >`)
+      try {
+        await redis.hset('prices', keys[i], price_in_eth)
+        console.log(`hset < prices, ${keys[i]} ${price_in_eth} >`)
+      } catch (e) {
+        console.error('priceWatcher[2]', e.message)
+      }
     }
   }
 }
@@ -48,13 +54,17 @@ function web3FetchGasPrice() {
   try {
     web3.eth.getGasPrice().then(async gasPrice => {
       if (gasPrice) {
-        gasPrice = await web3.utils.fromWei(gasPrice, 'gwei')
-        await redis.set('gasPrice', gasPrice)
-        console.log(`set gasPrice ${gasPrice}`)
+        try {
+          gasPrice = await web3.utils.fromWei(gasPrice, 'gwei')
+          await redis.set('gasPrice', gasPrice)
+          console.log(`set gasPrice ${gasPrice}`)
+        } catch (e) {
+          console.error('priceWatcher[3]', e.message)
+        }
       }
     })
   } catch (e) {
-    console.log('error=', e.message)
+    console.error('priceWatcher[4]', e.message)
   }
 }
 
@@ -66,5 +76,6 @@ async function main() {
   await fetchPrices()
 }
 
-// 20 minute update
-setSafeInterval(main, 20 * 60 * 1000)
+// 10 minute update
+console.log(`timeInterval=${timeInterval} minute`)
+setSafeInterval(main, timeInterval * 60 * 1000)

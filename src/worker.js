@@ -47,7 +47,7 @@ function start() {
     queue.process(processJob)
     console.log('Worker starte successfully!')
   } catch (e) {
-    console.error('error on start worker', e.message)
+    console.error('worker error on start', e.message)
   }
 }
 
@@ -133,7 +133,7 @@ async function processJob(job) {
     console.log(`Start processing a new ${job.data.type} job #${job.id}`)
     await submitTx(job)
   } catch (e) {
-    console.error('processJob', e.message)
+    console.error('worker processJob', e.message)
     await updateStatus(status.FAILED)
     throw e
   }
