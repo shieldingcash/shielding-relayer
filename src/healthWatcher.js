@@ -10,6 +10,11 @@ const redis = new Redis(redisUrl)
 
 async function main() {
   try {
+    if (!privateKey) {
+      console.log('please set privateKey in your env, healthWatcher exiting......')
+      process.exit(-1)
+    }
+
     const { address } = web3.eth.accounts.privateKeyToAccount(privateKey)
     const balance = await web3.eth.getBalance(address)
 
