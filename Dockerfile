@@ -1,7 +1,7 @@
 FROM node:12
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY package.json ./
 RUN yarn && yarn cache clean --force
 COPY . .
 
