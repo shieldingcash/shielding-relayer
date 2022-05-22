@@ -1,0 +1,46 @@
+name: publish
+
+on:
+  workflow_dispatch:
+    push:
+      branches: ['*']
+      tags: ['v[0-9]+.[0-9]+.[0-9]+']
+    pull_request:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set vars
+        id: vars
+        run: |
+          echo "::set-output name=version::$(echo ${GITHUB_REF#refs/tags/v})"
+          echo "::set-output name=repo_name::$(echo ${GITHUB_REPOSITORY#*/})"
+
+      - name: Check package.json version vs tag
+        run: |
+          [ ${{ steps.vars.outputs.version }} = $(grep '"version":' package.json | grep -o "[0-9.]*") ] || (echo "Git tag doesn't match version in package.json" && false)
+
+      - run: yarn install
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v1.1.0
+        with:
+          dockerfile: Dockerfile
+          repository: shieldingtrans/relayer
+          tag_with_ref: true
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+
+
+
