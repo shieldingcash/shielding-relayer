@@ -10,6 +10,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags')
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -20,16 +21,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set vars
-        id: vars
-        run: |
-          echo "::set-output name=version::$(echo ${GITHUB_REF#refs/tags/v})"
-          echo "::set-output name=repo_name::$(echo ${GITHUB_REPOSITORY#*/})"
-
-      - name: Check package.json version vs tag
-        run: |
-          [ ${{ steps.vars.outputs.version }} = $(grep '"version":' package.json | grep -o "[0-9.]*") ] || (echo "Git tag doesn't match version in package.json" && false)
-
       - run: yarn install
 
       - name: Build and push Docker image
@@ -37,7 +28,7 @@ jobs:
         with:
           dockerfile: Dockerfile
           repository: shieldingtrans/relayer
-          tag_with_ref: true
+          tag_with_ref: false
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
