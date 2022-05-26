@@ -24,4 +24,4 @@ wget https://github.com/shieldingcash/shielding-relayer/blob/main/docker-compose
   
 3. Run `docker-compose up -d`
 
-4. Run `docker-compose logs -f` to display the running logs
+4. Run `docker-compose logs -f` to view run logs
