@@ -34,12 +34,12 @@ async function fetchPrices() {
     }
   }
   // console.log(prices)
-  if (prices.has('eth')) {
-    let eth_decimals = netTokens['eth'].decimals
+  if (prices.has('btt')) {
+    let eth_decimals = netTokens['btt'].decimals
     for (let i = 0; i < keys.length; ++i) {
       let decimals = netTokens[keys[i]].decimals
 
-      let price_in_eth = (prices.get(keys[i]) * 10 ** eth_decimals) / (prices.get('eth') * 10 ** decimals)
+      let price_in_eth = (prices.get(keys[i]) * 10 ** eth_decimals) / (prices.get('btt') * 10 ** decimals)
       try {
         await redis.hset('prices', keys[i], price_in_eth)
         console.log(`hset < prices, ${keys[i]} ${price_in_eth} >`)

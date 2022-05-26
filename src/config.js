@@ -36,7 +36,7 @@ module.exports = {
   instances: {
     netId199: {
       // bttc main net
-      eth: {
+      btt: {
         instanceAddress: {},
         // eth is the chian's raw token.
         symbol: 'BTT',
@@ -52,7 +52,7 @@ module.exports = {
     },
     netId1029: {
       // bttc test net
-      eth: {
+      btt: {
         instanceAddress: {
           10000: '0xCEaF988d9fcD53a459428e675C6551E08910D8E0',
           100000: '0xE34b8A0A028fd0108295e4aD8b2789fBf1A95b06',
