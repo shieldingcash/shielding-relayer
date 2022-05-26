@@ -81,11 +81,11 @@ const run = () => {
   )
   app.use('/ui', ensureLoggedIn({ redirectTo: '/ui/login' }), serverAdapter.getRouter())
 
-  app.listen(port + 1, () => {
-    console.log('Running on', port + 1)
-    console.log('For the UI, open http://localhost:' + (port + 1) + '/ui')
+  app.listen(parseInt(port) + 1, () => {
+    console.log('Running on', parseInt(port) + 1)
+    console.log('For the UI, open http://localhost:' + (parseInt(port) + 1) + '/ui')
   })
 }
 
 // eslint-disable-next-line no-console
-run().catch(e => console.error(e))
+run()
