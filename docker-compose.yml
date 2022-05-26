@@ -20,6 +20,15 @@ services:
       REDIS_URL: redis://redis/0
     depends_on: [redis]
 
+  dashboard:
+    image: shieldingtrans/relayer:candidate
+    restart: always
+    command: dashboard
+    env_file: .env
+    environment:
+      REDIS_URL: redis://redis/0
+    depends_on: [redis]
+
   healthWatcher:
     image: shieldingtrans/relayer:candidate
     restart: always
