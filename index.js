@@ -21,11 +21,8 @@ serverAdapter.setBasePath('/admin/queues')
 app.use('/admin/queues', serverAdapter.getRouter())
 
 function index(req, res) {
-  res.send(
-    'Dashboard  <a href=/admin/queues>/admin/queues</a> ',
-  )
+  res.send('Dashboard  <a href=/admin/queues>/admin/queues</a> ')
 }
-
 
 app.get('/', index)
 

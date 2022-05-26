@@ -80,6 +80,7 @@ async function checkTornadoFee({ args, contract }) {
 
   let desiredFee
   switch (currency) {
+    case 'btt':
     case 'eth': {
       desiredFee = expense.add(feePercent)
       break

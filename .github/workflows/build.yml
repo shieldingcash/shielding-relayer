@@ -18,6 +18,3 @@ jobs:
       - run: yarn install
       - run: yarn test
       - run: yarn lint
-
-
-

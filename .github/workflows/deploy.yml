@@ -32,7 +32,3 @@ jobs:
           tags: candidate
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
-
-
-
-
