@@ -8,31 +8,34 @@ const { netId, instances, netExt, redisUrl, httpRpcUrl } = require('./config')
 
 const web3 = new Web3(httpRpcUrl)
 const redis = new Redis(redisUrl)
-const cmcUrl = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion'
-const cmcApiKeys = ['541df26c-f866-4bdf-88c3-e14a033cb570']
-var keyPos = 0,
-  timeInterval = 10
+const coinUrl = 'https://api.coingecko.com/api/v3/simple/price'
+var timeInterval = 2
 
 async function fetchPrices() {
   let netTokens = instances[`netId${netId}`]
   let keys = Object.keys(netTokens)
 
   let prices = new Map()
+  let ids = ''
   for (let i = 0; i < keys.length; ++i) {
-    try {
-      let id = netTokens[keys[i]].cmcId
-      let url = `${cmcUrl}?id=${id}&amount=1&convert=USD`
-      let response = await axios.get(url, {
-        headers: {
-          'X-CMC_PRO_API_KEY': cmcApiKeys[keyPos++ % cmcApiKeys.length],
-        },
-      })
-      prices.set(keys[i], response.data.data.quote['USD'].price)
-    } catch (e) {
-      console.error('priceWatcher[1]', e.message)
-      return
-    }
+    let id = netTokens[keys[i]].coinGeckoId
+    if (i > 0) ids += ','
+    ids += id
   }
+  try {
+    let url = `${coinUrl}?ids=${ids}&vs_currencies=usd`
+
+    let response = await axios.get(url)
+    for (let i = 0; i < keys.length; ++i) {
+      let id = netTokens[keys[i]].coinGeckoId
+      let price = response.data[id].usd
+      prices.set(keys[i], price)
+    }
+  } catch (e) {
+    console.error('priceWatcher[1]', e.message)
+    return
+  }
+
   // console.log(prices)
   if (prices.has('btt')) {
     let eth_decimals = netTokens['btt'].decimals
@@ -76,6 +79,5 @@ async function main() {
   await fetchPrices()
 }
 
-// 10 minute update
-console.log(`timeInterval=${timeInterval} minute`)
-setSafeInterval(main, timeInterval * 60 * 1000)
+console.log(`timeInterval=${timeInterval} seconds`)
+setSafeInterval(main, timeInterval * 1000)

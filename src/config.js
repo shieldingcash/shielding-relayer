@@ -21,7 +21,7 @@ module.exports = {
   CONFIRMATIONS: process.env.CONFIRMATIONS || 4,
   MAX_GAS_PRICE: process.env.MAX_GAS_PRICE || 1e6,
 
-  relayerAddress: process.env.RELAYER_ADDRESS || '0xf574f119978412A41b0e47dDD750C12A1f08Af3C',
+  relayerAddress: process.env.RELAYER_ADDRESS || '0xf574f119978412a41a0e478dd750c12a2f08af3c',
   netExt: {
     netId199: {
       evm: true,
@@ -41,13 +41,13 @@ module.exports = {
         // eth is the chian's raw token.
         symbol: 'BTT',
         decimals: 18,
-        cmcId: 16086,
+        coinGeckoId: 'bittorrent',
       },
       usdt: {
         instanceAddress: {},
         symbol: 'USDT',
         decimals: 6,
-        cmcId: 825,
+        coinGeckoId: 'tether',
       },
     },
     netId1029: {
@@ -61,7 +61,7 @@ module.exports = {
         },
         symbol: 'BTT',
         decimals: 18,
-        cmcId: 16086,
+        coinGeckoId: 'bittorrent',
       },
       usdt: {
         instanceAddress: {
@@ -72,7 +72,7 @@ module.exports = {
         },
         symbol: 'USDT',
         decimals: 6,
-        cmcId: 825,
+        coinGeckoId: 'tether',
       },
     },
   },
