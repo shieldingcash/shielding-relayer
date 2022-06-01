@@ -41,13 +41,13 @@ module.exports = {
         // eth is the chian's raw token.
         symbol: 'BTT',
         decimals: 18,
-        cmcId: 16086,
+        coinGeckoId: 'bittorrent',
       },
       usdt: {
         instanceAddress: {},
         symbol: 'USDT',
         decimals: 6,
-        cmcId: 825,
+        coinGeckoId: 'tether',
       },
     },
     netId1029: {
@@ -61,7 +61,7 @@ module.exports = {
         },
         symbol: 'BTT',
         decimals: 18,
-        cmcId: 16086,
+        coinGeckoId: 'bittorrent',
       },
       usdt: {
         instanceAddress: {
@@ -72,7 +72,7 @@ module.exports = {
         },
         symbol: 'USDT',
         decimals: 6,
-        cmcId: 825,
+        coinGeckoId: 'tether',
       },
     },
   },
