@@ -45,7 +45,7 @@ async function fetchPrices() {
       let price_in_eth = (prices.get(keys[i]) * 10 ** eth_decimals) / (prices.get('btt') * 10 ** decimals)
       try {
         await redis.hset('prices', keys[i], price_in_eth)
-        console.log(`hset < prices, ${keys[i]} ${price_in_eth} >`)
+        // console.log(`hset < prices, ${keys[i]} ${price_in_eth} >`)
       } catch (e) {
         console.error('priceWatcher[2]', e.message)
       }
@@ -60,7 +60,7 @@ function web3FetchGasPrice() {
         try {
           gasPrice = await web3.utils.fromWei(gasPrice, 'gwei')
           await redis.set('gasPrice', gasPrice)
-          console.log(`set gasPrice ${gasPrice}`)
+          // console.log(`set gasPrice ${gasPrice}`)
         } catch (e) {
           console.error('priceWatcher[3]', e.message)
         }
