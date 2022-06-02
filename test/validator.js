@@ -1,8 +1,6 @@
 require('chai').should()
 
-const {
-  getShieldingWithdrawInputError,
-} = require('../src/validator')
+const { getShieldingWithdrawInputError } = require('../src/validator')
 
 describe('Validator', () => {
   describe('#getShieldingWithdrawInputError', () => {
@@ -48,4 +46,3 @@ const withdrawData = {
   ],
   contract: '0x47CE0C6eD5B0Ce3d3A51fdb1C52DC66a7c3c2936',
 }
-
