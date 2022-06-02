@@ -107,9 +107,12 @@ async function checkTornadoFee({ args, contract }) {
 
 async function getTxObject({ data }) {
   if (data.type === jobType.SHIELDING_WITHDRAW) {
-    // Now: without mining.
     let contract = new web3.eth.Contract(tornadoABI, data.contract)
     let calldata = contract.methods.withdraw(data.proof, ...data.args).encodeABI()
+    const isSpent = await contract.methods.isSpent(web3.utils.toHex(data.args[1])).call()
+    if (isSpent) {
+      throw new Error('is spent')
+    }
     let gasPrice = await getGasPrice()
 
     return {
@@ -133,6 +136,7 @@ async function processJob(job) {
     await updateStatus(status.ACCEPTED)
     console.log(`Start processing a new ${job.data.type} job #${job.id}`)
     await submitTx(job)
+    console.log(`processJob #${job.id} finished`)
   } catch (e) {
     console.error('worker processJob', e.message)
     await updateStatus(status.FAILED)
