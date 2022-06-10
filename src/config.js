@@ -21,15 +21,15 @@ module.exports = {
   CONFIRMATIONS: process.env.CONFIRMATIONS || 4,
   MAX_GAS_PRICE: process.env.MAX_GAS_PRICE || 1e6,
 
-  relayerAddress: process.env.RELAYER_ADDRESS || '0xf574f119978412a41a0e478dd750c12a2f08af3c',
+  relayerAddress: process.env.RELAYER_ADDRESS || '0x9A68ff88988625bCAf138714772083E2C7EEE4d7',
   netExt: {
     netId199: {
       evm: true,
-      verifier: '0x8cbc96c7ceC72C7e0f90f41Cd18a69942B487BC5',
+      verifier: '0x8bB82ACE9971C479FA0b65B534c2E59aaE9a19a9',
     },
     netId1029: {
       evm: true,
-      verifier: '0x8cbc96c7ceC72C7e0f90f41Cd18a69942B487BC5',
+      verifier: '0x8bB82ACE9971C479FA0b65B534c2E59aaE9a19a9',
     },
   },
   // same as front's deployment.
@@ -37,43 +37,44 @@ module.exports = {
     netId199: {
       // bttc main net
       btt: {
-        instanceAddress: {},
+        instanceAddress: {
+          100000000: '0xA34C619bEC89218cbb7dE9940190b3e3cD196d52',
+          1000000000: '0x33804B6E0fA783b2d064F30748F36124c2027549',
+        },
         // eth is the chian's raw token.
         symbol: 'BTT',
         decimals: 18,
         coinGeckoId: 'bittorrent',
       },
-      usdt: {
-        instanceAddress: {},
-        symbol: 'USDT',
-        decimals: 6,
-        coinGeckoId: 'tether',
-      },
+      //usdt: {
+      //  instanceAddress: {},
+      //  symbol: 'USDT',
+      //  decimals: 6,
+      //  coinGeckoId: 'tether',
+      //},
     },
     netId1029: {
       // bttc test net
       btt: {
         instanceAddress: {
-          10000: '0xCEaF988d9fcD53a459428e675C6551E08910D8E0',
-          100000: '0xE34b8A0A028fd0108295e4aD8b2789fBf1A95b06',
-          1000000: '0xa4b92ed00AfDec0D6E09634f67E3249D1C4e35AC',
-          10000000: '0x1C01160E4E57873FF273FCf1aa70BaEF01571F0D',
+          100000000: '0xA34C619bEC89218cbb7dE9940190b3e3cD196d52',
+          1000000000: '0x33804B6E0fA783b2d064F30748F36124c2027549',
         },
         symbol: 'BTT',
         decimals: 18,
         coinGeckoId: 'bittorrent',
       },
-      usdt: {
-        instanceAddress: {
-          1000: '0x99Bc3aee04aa83e32a6F77B4a9ed5939D6956344',
-          10000: '0x7A88cC3d2a356E4c47bA857c7bD76202BdcBAAe9',
-          100000: '0x74Ea7aC50C29d1314Ef2D22A09F126867cb9B696',
-          1000000: '0xA6025Aeb8989b77B7cb993eA31257C8165E797A3',
-        },
-        symbol: 'USDT',
-        decimals: 6,
-        coinGeckoId: 'tether',
-      },
+      //usdt: {
+      //  instanceAddress: {
+      //    1000: '0x99Bc3aee04aa83e32a6F77B4a9ed5939D6956344',
+      //    10000: '0x7A88cC3d2a356E4c47bA857c7bD76202BdcBAAe9',
+      //    100000: '0x74Ea7aC50C29d1314Ef2D22A09F126867cb9B696',
+      //    1000000: '0xA6025Aeb8989b77B7cb993eA31257C8165E797A3',
+      //  },
+      //  symbol: 'USDT',
+      //  decimals: 6,
+      //  coinGeckoId: 'tether',
+      //},
     },
   },
 }
