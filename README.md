@@ -23,7 +23,6 @@ wget https://github.com/shieldingcash/shielding-relayer/blob/main/docker-compose
 - update `BASE_FEE_RESERVE_PERCENTAGE` if needed - how much in % will the network baseFee increase
 - set `VIRTUAL_HOST` and `LETSENCRYPT_HOST` to your domain and add DNS record pointing to your relayer ip address
 
-
 3. Run `docker-compose up -d`
 
 4. Run `docker-compose logs -f` to view run logs

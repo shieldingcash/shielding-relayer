@@ -45,18 +45,15 @@ const createQueue = name =>
     redis: { port: 6379, host: '127.0.0.1', password: '' },
   })
 
-const run = () => {
-  const exampleBullMq = createQueue('proofs')
-
+const runUi = (app) => {
   const serverAdapter = new ExpressAdapter()
   serverAdapter.setBasePath('/ui')
 
   createBullBoard({
-    queues: [new BullMQAdapter(exampleBullMq)],
+    queues: [new BullMQAdapter(createQueue('proofs'))],
     serverAdapter,
   })
 
-  const app = express()
   // Configure view engine to render EJS templates.
   app.set('views', __dirname + '/views')
   app.set('view engine', 'ejs')
@@ -80,12 +77,9 @@ const run = () => {
     },
   )
   app.use('/ui', ensureLoggedIn({ redirectTo: '/ui/login' }), serverAdapter.getRouter())
-
-  app.listen(parseInt(port) + 1, () => {
-    console.log('Running on', parseInt(port) + 1)
-    console.log('For the UI, open http://localhost:' + (parseInt(port) + 1) + '/ui')
-  })
 }
 
 // eslint-disable-next-line no-console
-run()
+module.exports = {
+  runUi,
+}
