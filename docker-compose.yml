@@ -63,7 +63,6 @@ services:
 
   dockergen:
     image: poma/docker-gen
-    container_name: dockergen
     restart: always
     command: -notify-sighup nginx -watch /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
     volumes_from:
