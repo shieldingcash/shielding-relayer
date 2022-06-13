@@ -7,8 +7,6 @@ const bodyParser = require('body-parser')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const { ensureLoggedIn } = require('connect-ensure-login')
-const express = require('express')
-const { port } = require('../config')
 
 // Configure the local strategy for use by Passport.
 //
@@ -45,7 +43,7 @@ const createQueue = name =>
     redis: { port: 6379, host: '127.0.0.1', password: '' },
   })
 
-const runUi = (app) => {
+const runUi = app => {
   const serverAdapter = new ExpressAdapter()
   serverAdapter.setBasePath('/ui')
 
