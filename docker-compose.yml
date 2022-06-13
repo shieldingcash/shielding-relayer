@@ -9,7 +9,7 @@ services:
     environment:
       REDIS_URL: redis://redis/0
       nginx_proxy_read_timeout: 600
-      VIRTUAL_HOST: 127.0.0.1
+      VIRTUAL_HOST: relayer.shielding.cash
     depends_on: [redis]
 
   priceWatcher:
@@ -63,7 +63,6 @@ services:
 
   dockergen:
     image: poma/docker-gen
-    container_name: dockergen
     restart: always
     command: -notify-sighup nginx -watch /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
     volumes_from:

@@ -21,7 +21,7 @@ wget https://github.com/shieldingcash/shielding-relayer/blob/main/docker-compose
 - update `CONFIRMATIONS` if needed - how many block confirmations to wait before processing an event. Not recommended to set less than 3
 - update `MAX_GAS_PRICE` if needed - maximum value of gwei value for relayer's transaction
 - update `BASE_FEE_RESERVE_PERCENTAGE` if needed - how much in % will the network baseFee increase
-- set `VIRTUAL_HOST` and `LETSENCRYPT_HOST` to your domain and add DNS record pointing to your relayer ip address
+- set `VIRTUAL_HOST` to your domain and add DNS record pointing to your relayer ip address
 
 3. Run `docker-compose up -d`
 
