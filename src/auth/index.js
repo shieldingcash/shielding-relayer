@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const { ensureLoggedIn } = require('connect-ensure-login')
+const { redisUrl } = require('../config')
 
 // Configure the local strategy for use by Passport.
 //
@@ -16,6 +17,7 @@ const { ensureLoggedIn } = require('connect-ensure-login')
 // will be set at `req.user` in route handlers after authentication.
 passport.use(
   new LocalStrategy(function (username, password, cb) {
+    // console.log(username, process.env.ADMIN_USER, password, process.env.ADMIN_PASSWORD)
     if (username === process.env.ADMIN_USER && password === process.env.ADMIN_PASSWORD) {
       return cb(null, { user: 'bull-board' })
     }
@@ -38,10 +40,7 @@ passport.deserializeUser((user, cb) => {
   cb(null, user)
 })
 
-const createQueue = name =>
-  new Queue(name, {
-    redis: { port: 6379, host: '127.0.0.1', password: '' },
-  })
+const createQueue = name => new Queue(name, redisUrl)
 
 const runUi = app => {
   const serverAdapter = new ExpressAdapter()
