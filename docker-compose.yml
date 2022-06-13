@@ -9,7 +9,7 @@ services:
     environment:
       REDIS_URL: redis://redis/0
       nginx_proxy_read_timeout: 600
-      VIRTUAL_HOST: 127.0.0.1
+      VIRTUAL_HOST: relayer.shielding.cash
     depends_on: [redis]
 
   priceWatcher:
