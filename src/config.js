@@ -57,6 +57,8 @@ module.exports = {
       // bttc test net
       btt: {
         instanceAddress: {
+	  10000: '0xCEaF988d9fcD53a459428e675C6551E08910D8E0',
+	  100000: '0xE34b8A0A028fd0108295e4aD8b2789fBf1A95b06',
           100000000: '0xA34C619bEC89218cbb7dE9940190b3e3cD196d52',
           1000000000: '0x33804B6E0fA783b2d064F30748F36124c2027549',
         },
