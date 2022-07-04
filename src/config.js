@@ -38,6 +38,7 @@ module.exports = {
       // bttc main net
       btt: {
         instanceAddress: {
+	  1000: '0x793431607Ec6265fa309596b8629f9b30e3ACB07',
           100000000: '0xA34C619bEC89218cbb7dE9940190b3e3cD196d52',
           1000000000: '0x33804B6E0fA783b2d064F30748F36124c2027549',
         },
