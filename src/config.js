@@ -47,12 +47,16 @@ module.exports = {
         decimals: 18,
         coinGeckoId: 'bittorrent',
       },
-      //usdt: {
-      //  instanceAddress: {},
-      //  symbol: 'USDT',
-      //  decimals: 6,
-      //  coinGeckoId: 'tether',
-      //},
+      usdt: {
+        instanceAddress: {
+          100: '0x8F78Eb4E18F18a166543d7E6648AFa99e80934D0',
+          1000: '0x7B1849b6073138EA9f3BD396509f78989E1E254E',
+          10000: '0xd086681E5b0933Fe7C35DEBA18b363760A852007',
+        },
+        symbol: 'USDT',
+        decimals: 6,
+        coinGeckoId: 'tether',
+      },
     },
     netId1029: {
       // bttc test net
